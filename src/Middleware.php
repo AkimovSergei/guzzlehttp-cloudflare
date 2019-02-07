@@ -27,7 +27,7 @@ class Middleware
     }
 
 
-    public static function create(): \Closure
+    public static function create()
     {
         return function ($cHandler) {
             return new static($cHandler);
@@ -63,7 +63,9 @@ class Middleware
      */
     protected function checkResponse(RequestInterface $oRequest, ResponseInterface $oResponse, array $aOptions = [])
     {
-        return !$this->shouldHack($oResponse) ? $oResponse : $this($this->hackRequest($oRequest), $aOptions);
+        return !$this->shouldHack($oResponse)
+             ? $oResponse
+             : $this($this->hackRequest($oRequest), $aOptions);
     }
 
     /**
@@ -83,7 +85,7 @@ class Middleware
      * @return \Psr\Http\Message\RequestInterface
      * @throws \Exception
      */
-    protected function hackRequest(RequestInterface $oRequest): RequestInterface
+    protected function hackRequest(RequestInterface $oRequest)
     {
         $sUrl = $oRequest->getUri();
         $aInfo = parse_url($sUrl);
@@ -99,12 +101,14 @@ class Middleware
             ]
         ];
         $oGuzzleBypass = new Stream($sUrl, stream_context_create($aOpts));
+
         // nobody should use static functions, this is madness
         (new CFBypasser)->exec(
             $oGuzzleBypass,
             'CFStreamContext',
             ['max_retries' => 5, 'cache' => false, 'verbose_mode' => false]
         );
+
         return $oRequest->withHeader(
             'Cookie',
             array_merge([$oGuzzleBypass->getHeader("cookie")], $oRequest->getHeader('Cookie'))
