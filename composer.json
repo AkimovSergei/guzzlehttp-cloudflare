@@ -1,5 +1,5 @@
 {
-    "name": "jaymoulin/guzzlehttp-cloudflare",
+    "name": "sa/guzzlehttp-cloudflare",
     "description": "Bypass Cloudflare protection using GuzzleHTTP",
     "autoload": {
         "psr-4": {
