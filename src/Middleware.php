@@ -10,8 +10,7 @@ use \CloudflareBypass\CFBypasser;
 class Middleware
 {
     /** @var string USER_AGENT */
-    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 ' .
-    '(KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36';
+    const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36';
 
 
     /** @var callable $cNextHandler */
@@ -96,7 +95,7 @@ class Middleware
                 'header' => [
                     'accept: */*', // required
                     'host: ' . $sDomain, // required
-                    'user-agent: ' . ($oRequest->getHeader('User-Agent')[0] ?? self::USER_AGENT),
+                    'user-agent: ' . (isset($oRequest->getHeader('User-Agent')[0]) ? $oRequest->getHeader('User-Agent')[0] : self::USER_AGENT),
                 ]
             ]
         ];
